@@ -5,5 +5,6 @@ const router = express.Router();
 router.get("", controller.getSchedulepage);
 router.post("/add-cricketer", controller.postAddIndex);
 router.get("/search", controller.searchCricketerByName);
+router.put("/update-cricketer/:id", controller.updateCricketer);
 
 module.exports = router;

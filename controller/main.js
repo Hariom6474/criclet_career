@@ -39,6 +39,46 @@ exports.postAddIndex = async (req, res, next) => {
   }
 };
 
+exports.updateCricketer = async (req, res, next) => {
+  try {
+    const uid = req.params.id;
+    const name = req.body.name;
+    const dob = req.body.dob;
+    const photoUrl = req.body.photoUrl;
+    const birthplace = req.body.birthplace;
+    const career = req.body.career;
+    const noOfMatches = req.body.noOfMatches;
+    const score = req.body.score;
+    const fifties = req.body.fifties;
+    const centuries = req.body.centuries;
+    const wickets = req.body.wickets;
+    const average = req.body.average;
+    const updatedData = {
+      name: name,
+      dob: dob,
+      photoUrl: photoUrl,
+      birthplace: birthplace,
+      career: career,
+      numberOfMatches: noOfMatches,
+      score: score,
+      fifties: fifties,
+      centuries: centuries,
+      wickets: wickets,
+      average: average,
+    };
+    const updatedCricketer = await Cricketer.update(updatedData, {
+      where: { id: uid },
+    });
+    if (!updatedCricketer) {
+      res.status(404).json({ error: "cricketer not found" });
+    }
+    res.status(200).json(updatedCricketer);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
 exports.searchCricketerByName = async (req, res, next) => {
   try {
     const name = req.query.name;
@@ -48,6 +88,7 @@ exports.searchCricketerByName = async (req, res, next) => {
     const cricketers = await Cricketer.findAll({
       where: {
         name: { [Sequelize.Op.like]: `%${name}%` },
+        // name: name,
       },
     });
     res.status(200).json(cricketers);
